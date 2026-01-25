@@ -4,7 +4,15 @@ import { mockProjectList } from './project-list.mock-data';
 let projectList = [...mockProjectList];
 
 export const getProjectList = async (): Promise<Project[]> => {
-  return projectList;
+  try {
+    const response = await fetch('/api/projects');
+    if (!response.ok) {
+      return mockProjectList;
+    }
+    return response.json();
+  } catch (error) {
+    return mockProjectList;
+  }
 };
 
 export const deleteProject = async (id: string): Promise<boolean> => {
